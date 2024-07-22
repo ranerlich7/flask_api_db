@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous" />
+
+</head>
+<body>
+    <div id='carsList' class='car-group'></div>
+    <script>
+        axios({
+            method: 'get',
+            url: 'http://127.0.0.1:5000/cars',
+        })
+            .then(function (response) {
+                // carsList.innerHTML = response.data
+                console.log(response.data)
+                displayCars(response.data)
+            });
+        function displayCars (cars) {
+            let finalStr = '<div class="row row-cols-3 row-cols-md-3 g-4">'
+            for (let i = 0; i < cars.length; i++) {
+                const carsStr = `
+                <div class="col">
+                <div class="card" style="width: 18rem;max-width: 200px;">
+                    <img src="${cars[i].image}" class="card-img-top" alt="...">
+                    <div class="card-body">
+                        <h5 class="card-title">${cars[i].number} </h5>
+                        <p class="card-text">${cars[i].problems}</p>
+                        <button class="btn btn-danger" onclick="deleteDestination('${cars[i].id}')">Delete</button>
+                        <button class="btn btn-primary" onclick="editDestination(${i})">Edit</button>
+                    </div>
+                </div>
+                </div>`;
+                finalStr = finalStr + carsStr;
+            }
+            carsList.innerHTML = finalStr + '</div>';
+        }
+    </script>
+</body>
+</html>
